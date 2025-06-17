@@ -18,8 +18,6 @@ import java.util.UUID;
 
 public class Main {
     public static void main(String[] args) {
-
-
         String username = args[0];
         String password = args[1];
 
@@ -248,7 +246,7 @@ public class Main {
 
     private static void displaySearchResults(List<Vehicle> vehicles) {
         if (vehicles.isEmpty()) {
-            System.out.println("No vehicles found..");
+            System.out.println("No vehicles found.");
         } else {
             System.out.println("\nSearch Results:");
             for (Vehicle vehicle : vehicles) {

@@ -1,9 +1,13 @@
 package com.yearup.dealership.db;
 
+import com.yearup.dealership.models.Vehicle;
+
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class InventoryDao {
     private DataSource dataSource;
@@ -13,27 +17,34 @@ public class InventoryDao {
     }
 
     public void addVehicleToInventory(String vin, int dealershipId) {
-        // TODO: Implement the logic to add a vehicle to the inventory
+        List<Vehicle> vehicles = new ArrayList<>();
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(
+                     "INSERT INTO inventory (vin, dealership_id) VALUES (?, ?) ")
+        ) {
+            preparedStatement.setString(1, vin);
+            preparedStatement.setInt(2, dealershipId);
 
+            preparedStatement.executeUpdate();
 
-            try (Connection connection = dataSource.getConnection();
-                 PreparedStatement preparedStatement =
-                         connection.prepareStatement(
-                                 "insert into country (country) values (?);");
-            ) {
-// set the parameter
-                preparedStatement.setString(1, "Eritrea");
-// execute the query
-                int rows = preparedStatement.executeUpdate();
-                System.out.printf("Rows updated %d\n", rows);
-            }
-            catch (SQLException e) {
-                e.printStackTrace();
-            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
 
 
+        }
     public void removeVehicleFromInventory(String vin) {
-        // TODO: Implement the logic to remove a vehicle from the inventory
+        List<Vehicle> vehicles = new ArrayList<>();
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(
+                     "DELETE FROM inventory WHERE VIN LIKE ?")
+        ) {
+            preparedStatement.setString(1, vin);
+            preparedStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
     }
 }

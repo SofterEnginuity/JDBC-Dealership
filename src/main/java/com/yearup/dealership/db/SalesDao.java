@@ -4,9 +4,7 @@ import com.yearup.dealership.models.SalesContract;
 import com.yearup.dealership.models.Vehicle;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,16 +16,16 @@ public class SalesDao {
     }
 
     public void addSalesContract(SalesContract salesContract) {
-
-        List<Vehicle> vehicles = new ArrayList<>();
         try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(
-                     "INSERT INTO lease_contracts (contract_id, VIN, sale_date, price) VALUES (?, ?, ?, ?)")
+                     "INSERT INTO sales_contracts (VIN,sale_date,price) VALUES (?, ?, ?)", Statement.RETURN_GENERATED_KEYS)
         ) {
-            preparedStatement.setInt(1,salesContract.getContractId());
-            preparedStatement.setString(2, salesContract.getVin());
-            preparedStatement.setDate(3, java.sql.Date.valueOf(salesContract.getSaleDate()));
-            preparedStatement.setDouble(4, salesContract.getPrice());
+
+            preparedStatement.setString(1, salesContract.getVin());
+            preparedStatement.setDate(2, java.sql.Date.valueOf(salesContract.getSaleDate()));
+            preparedStatement.setDouble(3, salesContract.getPrice());
+            ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
+
 
             preparedStatement.executeUpdate();
         } catch (SQLException e) {

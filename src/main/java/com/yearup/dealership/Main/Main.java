@@ -98,19 +98,20 @@ public class Main {
     }
 
     private static void addSalesContract(SalesDao salesDao, String vin, Scanner scanner) {
-
+//
         System.out.print("Enter the sale date (YYYY-MM-DD): ");
         String saleDateStr = scanner.nextLine();
         LocalDate saleDate = LocalDate.parse(saleDateStr);
 
         System.out.print("Enter the price: ");
         double price = scanner.nextDouble();
-        scanner.nextLine(); // Consume the newline character
+        scanner.nextLine();
 
         SalesContract salesContract = new SalesContract(vin, saleDate, price);
         salesDao.addSalesContract(salesContract);
 
         System.out.println("Sales contract added successfully.");
+
     }
 
     private static void addLeaseContract(LeaseDao leaseDao, String vin, Scanner scanner) {
